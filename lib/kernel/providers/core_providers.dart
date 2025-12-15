@@ -24,10 +24,18 @@ Future<String?> apiKey(ApiKeyRef ref) async {
 }
 
 @riverpod
+Future<String> selectedModel(SelectedModelRef ref) async {
+  final storage = ref.watch(secureStorageProvider);
+  return await storage.getModelId();
+}
+
+@riverpod
 Future<GeminiService> geminiService(GeminiServiceRef ref) async {
   final apiKey = await ref.watch(apiKeyProvider.future);
+  final modelId = await ref.watch(selectedModelProvider.future);
+
   if (apiKey == null || apiKey.isEmpty) {
     throw Exception('API Key not found');
   }
-  return GeminiService(apiKey: apiKey);
+  return GeminiService(apiKey: apiKey, modelId: modelId);
 }

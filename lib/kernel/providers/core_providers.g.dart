@@ -57,7 +57,24 @@ final apiKeyProvider = AutoDisposeFutureProvider<String?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ApiKeyRef = AutoDisposeFutureProviderRef<String?>;
-String _$geminiServiceHash() => r'5055015008ac628a4bb63a664d54844189ee70eb';
+String _$selectedModelHash() => r'73ab80a2a6d95ec045970a9c94b371ac4da07848';
+
+/// See also [selectedModel].
+@ProviderFor(selectedModel)
+final selectedModelProvider = AutoDisposeFutureProvider<String>.internal(
+  selectedModel,
+  name: r'selectedModelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$selectedModelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SelectedModelRef = AutoDisposeFutureProviderRef<String>;
+String _$geminiServiceHash() => r'bc330f3ab92b26d1546d827f13965fbf87068a4a';
 
 /// See also [geminiService].
 @ProviderFor(geminiService)

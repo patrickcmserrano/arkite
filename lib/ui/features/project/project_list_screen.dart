@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:arkite/io/drift_repository.dart';
 import 'package:arkite/kernel/providers/project_providers.dart';
 import 'package:arkite/ui/features/chat/chat_screen.dart';
+import 'package:arkite/ui/features/settings/settings_screen.dart';
 
 class ProjectListScreen extends ConsumerWidget {
   const ProjectListScreen({super.key});
@@ -18,7 +19,10 @@ class ProjectListScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // TODO: Navigate to settings
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              );
             },
           ),
         ],

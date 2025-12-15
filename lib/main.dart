@@ -4,6 +4,7 @@ import 'package:arkite/io/drift_repository.dart';
 import 'package:arkite/kernel/providers/core_providers.dart';
 import 'package:arkite/ui/design_system/app_theme.dart';
 import 'package:arkite/ui/features/settings/welcome_screen.dart';
+import 'package:arkite/ui/features/project/project_list_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,12 +36,7 @@ class MainApp extends ConsumerWidget {
           if (apiKey == null) {
             return const WelcomeScreen();
           }
-          // TODO: Replace with Project List / Chat Screen
-          return const Scaffold(
-            body: Center(
-              child: Text('Authenticated! Project List coming soon.'),
-            ),
-          );
+          return const ProjectListScreen();
         },
         loading: () =>
             const Scaffold(body: Center(child: CircularProgressIndicator())),

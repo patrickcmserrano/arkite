@@ -41,6 +41,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _scrollToBottom();
 
     try {
+      print(
+        '💬 [ChatScreen] Sending message: ${message.substring(0, message.length > 50 ? 50 : message.length)}...',
+      );
+
       // Get repository
       final repo = ref.read(driftRepositoryProvider);
 
@@ -54,6 +58,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
       );
 
+      print('✅ [ChatScreen] User node saved with ID: $userNodeId');
+
       // Fetch the saved user node
       final userNode = await repo.getNode(userNodeId);
       if (userNode != null) {
@@ -64,14 +70,23 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       }
 
       // Get Gemini service
+      print('🔧 [ChatScreen] Getting Gemini service...');
       final geminiService = await ref.read(geminiServiceProvider.future);
+      print('✅ [ChatScreen] Gemini service obtained');
 
       // Get response
+      print(
+        '📤 [ChatScreen] Calling generateContent with ${_messages.length - 1} history items',
+      );
       final response = await geminiService.generateContent(
         message,
         history: _messages.length > 1
             ? _messages.sublist(0, _messages.length - 1)
             : null,
+      );
+
+      print(
+        '✅ [ChatScreen] Response received: ${response?.substring(0, response.length > 50 ? 50 : response.length)}...',
       );
 
       if (response != null) {
@@ -97,7 +112,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           _scrollToBottom();
         }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('❌ [ChatScreen] Error occurred: $e');
+      print('❌ [ChatScreen] Stack trace: $stackTrace');
+
       setState(() {
         _isLoading = false;
       });

@@ -1,12 +1,13 @@
 # Arkite (Prompt IDE)
 
-Arkite é um ambiente de desenvolvimento integrado (IDE) focado em prompts, construído com Flutter e potencializado pela Gemini AI. O objetivo é permitir o gerenciamento de projetos e conversas complexas com LLMs de forma estruturada e persistente.
+Arkite é um ambiente de desenvolvimento integrado (IDE) focado em prompts, construído com Flutter e potencializado pela **Gemini 2.5 Flash AI**. O objetivo é permitir o gerenciamento de projetos e conversas complexas com LLMs de forma estruturada e persistente.
 
 ## 🚀 Funcionalidades Implementadas
 
 ### Arquitetura e Core
 - **Gerenciamento de Estado:** Utilização do `flutter_riverpod` para injeção de dependência e controle de estado reativo.
-- **Persistência de Dados:** Integração com `Isar Database` para armazenamento local de alto desempenho.
+- **Persistência de Dados:** Integração com **Drift Database** (SQLite) para armazenamento local robusto e multiplataforma.
+- **Suporte Web:** Configuração completa para execução no navegador utilizando `sqlite3.wasm` e Web Workers para o Drift.
 - **Estrutura de Código:** Organização em camadas (`ui`, `kernel`, `io`) para separação de responsabilidades.
 
 ### Features
@@ -14,13 +15,34 @@ Arkite é um ambiente de desenvolvimento integrado (IDE) focado em prompts, cons
   - Tela `WelcomeScreen` para entrada inicial e configuração da API Key do Gemini.
   - Validação e persistência segura da API Key.
 - **Gerenciamento de Projetos:**
-  - Modelo de dados `Project` completo com persistência.
-  - Providers (`project_providers.dart`) para CRUD de projetos.
-  - Interface `ProjectListScreen` para visualização e criação de projetos (código base implementado).
+  - Modelo de dados `Project` (Tabela Drift).
+  - Providers e Repositório (`DriftRepository`) para CRUD de projetos.
+  - Interface `ProjectListScreen` funcional para listagem e criação de projetos.
 - **Sistema de Chat:**
-  - Modelo de dados `Node` para estruturar conversas e contextos.
-  - Interface `ChatScreen` com suporte a histórico e interação (código base implementado).
+  - Modelo de dados `Node` (Tabela Drift) para estruturar conversas.
+  - Interface `ChatScreen` implementada.
   - Serviço `GeminiService` estruturado para comunicação com a API.
+
+### Gemini 2.5 Flash - Capacidades
+- **Modelo:** `gemini-2.5-flash` (Stable Version)
+- **Limites de Tokens:**
+  - Input: 1,048,576 tokens
+  - Output: 65,536 tokens
+- **Tipos de Entrada Suportados:** Texto, Imagens, Vídeo, Áudio
+- **Capacidades Habilitadas:**
+  - ✅ Batch API
+  - ✅ Caching
+  - ✅ Code Execution
+  - ✅ File Search
+  - ✅ Function Calling
+  - ✅ Grounding with Google Maps
+  - ✅ Search Grounding
+  - ✅ Structured Outputs
+  - ✅ Thinking
+  - ✅ URL Context
+- **Não Suportado:** Audio Generation, Image Generation, Live API
+- **Última Atualização:** June 2025
+- **Knowledge Cutoff:** January 2025
 
 ### Design
 - Design System base configurado com `AppTheme.darkTheme`.
@@ -39,20 +61,29 @@ Siga os passos abaixo para configurar e executar o ambiente de desenvolvimento:
    flutter pub get
    ```
 
-2. **Gere os arquivos de código (Riverpod & Isar):**
-   Como o projeto utiliza geração de código, é necessário rodar o build_runner:
+2. **Gere os arquivos de código (Riverpod & Drift):**
+   Como o projeto utiliza geração de código (Drift e Riverpod), é necessário rodar o build_runner:
    ```bash
    dart run build_runner build --delete-conflicting-outputs
    ```
 
 3. **Execute o aplicativo:**
+   
+   **Desktop (Windows/Linux/macOS):**
    ```bash
-   flutter run
+   flutter run -d windows
    ```
+   *(Ou linux/macos dependendo do seu SO)*
 
-## 📋 Próximos Passos
+   **Web:**
+   ```bash
+   flutter run -d chrome
+   ```
+   *Nota: Certifique-se de que os arquivos `sqlite3.wasm` e `drift_worker.dart.js` estejam corretamente na pasta `web` (já incluídos no repositório).*
 
-- [ ] **Integração de Navegação:** Substituir o placeholder na `main.dart` pela `ProjectListScreen` e configurar a rota para a `ChatScreen`.
-- [ ] **Integração Gemini:** Conectar totalmente o `GeminiService` à UI do Chat, implementando a conversão correta do histórico de `Node` para o formato esperado pela API.
-- [ ] **Refinamento de UI/UX:** Polir as interfaces de lista e chat para melhor experiência do usuário.
-- [ ] **Testes:** Expandir a cobertura de testes para os providers e services.
+## 📋 Próximos Passos (TODO List)
+
+- [ ] **Integração Fina do Chat:** Validar o fluxo completo de mensagens e respostas com a API do Gemini persistindo no Drift.
+- [ ] **Tree Walker:** Implementar algoritmos avançados para navegação na árvore de conversa (Nodes).
+- [ ] **Refinamento de UI/UX:** Melhorar feedback visual durante o loading e tratativa de erros.
+- [ ] **Testes:** Expandir a cobertura de testes para o `DriftRepository` e ViewModels.
