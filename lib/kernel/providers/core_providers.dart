@@ -1,14 +1,14 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:arkite/io/isar_repository.dart';
+import 'package:arkite/io/drift_repository.dart';
 import 'package:arkite/io/storage/secure_storage.dart';
 import 'package:arkite/kernel/services/gemini_service.dart';
 
 part 'core_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-IsarRepository isarRepository(IsarRepositoryRef ref) {
+DriftRepository driftRepository(DriftRepositoryRef ref) {
   throw UnimplementedError(
-    'isarRepositoryProvider must be overridden in main.dart',
+    'driftRepositoryProvider must be overridden in main.dart',
   );
 }
 

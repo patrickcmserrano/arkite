@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:arkite/io/isar_repository.dart';
+import 'package:arkite/io/drift_repository.dart';
 import 'package:arkite/kernel/providers/core_providers.dart';
 import 'package:arkite/ui/design_system/app_theme.dart';
 import 'package:arkite/ui/features/settings/welcome_screen.dart';
@@ -8,13 +8,13 @@ import 'package:arkite/ui/features/settings/welcome_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Isar
-  final isarRepo = IsarRepository();
-  await isarRepo.init();
+  // Initialize Drift Database
+  final driftRepo = DriftRepository();
+  await driftRepo.init();
 
   runApp(
     ProviderScope(
-      overrides: [isarRepositoryProvider.overrideWithValue(isarRepo)],
+      overrides: [driftRepositoryProvider.overrideWithValue(driftRepo)],
       child: const MainApp(),
     ),
   );

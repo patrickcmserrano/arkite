@@ -1,5 +1,5 @@
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:arkite/kernel/models/node.dart';
+import 'package:arkite/io/drift_repository.dart';
 
 class GeminiService {
   final String apiKey;
@@ -10,10 +10,17 @@ class GeminiService {
   }
 
   Future<String?> generateContent(String prompt, {List<Node>? history}) async {
-    final content = [Content.text(prompt)];
+    final content = <Content>[];
 
-    // TODO: Convert Node history to Gemini Content history if needed
-    // For now, we just send the prompt as a single turn
+    // Convert Node history to Gemini Content history
+    if (history != null && history.isNotEmpty) {
+      for (final node in history) {
+        content.add(Content(node.role, [TextPart(node.content)]));
+      }
+    }
+
+    // Add the current prompt
+    content.add(Content.text(prompt));
 
     final response = await _model.generateContent(content);
     return response.text;
